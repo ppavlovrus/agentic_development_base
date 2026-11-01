@@ -37,6 +37,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Shim-triggered toolchain installs skip components; install the
+      # pinned toolchain (from rust-toolchain.toml in the working directory)
+      # with the default profile so rustfmt and clippy are present.
+      - name: Install pinned toolchain (rustfmt + clippy)
+        run: rustup toolchain install --profile default
+
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: templates/rust-service
