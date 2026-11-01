@@ -34,9 +34,13 @@ CREATE TABLE <entities> (
 - `crates/domain/src/error.rs` — ошибки валидации (`<Entity>Error`) и
   варианты `RepositoryError`, если нужны новые.
 - `crates/domain/src/repositories.rs` — трейт `<Entity>Repository`
-  (`insert` / `find_by_id` / `list` / update-методы).
-- `crates/domain/src/events.rs` — событие `<Entity>Created` (serde Serialize
-  + Deserialize) и routing key в `routing_keys`.
+  (`insert` / `find_by_id` / `list` / update-методы). Update-методы статусов
+  делай compare-and-set (`from`, `to`), образец — `update_status` у Task.
+- Необязательно (только если на события сущности реагируют фоновые
+  обработчики): `crates/domain/src/events.rs` — событие `<Entity>Created`
+  (serde Serialize + Deserialize) и routing key в `routing_keys`; тогда же
+  `ensure_queue(...)` в `RabbitEventPublisher::new` (п. 3) и consumer в
+  worker (п. 6).
 
 Не добавляй в domain ничего из infra: сборка упадёт — так и задумано.
 
