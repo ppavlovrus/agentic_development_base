@@ -12,6 +12,10 @@ env:
   SQLX_OFFLINE: "true"
   DATABASE_URL: postgres://app:app@localhost:5432/app
 
+defaults:
+  run:
+    working-directory: templates/rust-service
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -34,6 +38,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: templates/rust-service
 
       - name: Install sqlx-cli (migrate + prepare --check)
         uses: taiki-e/install-action@v2

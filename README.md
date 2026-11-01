@@ -1,64 +1,48 @@
 # agentic_development_base
 
-A Rust service template built for agent-driven development: a working, fully
-tested vertical slice (entity → repository → service → HTTP API → background
-worker) rather than a folder of instructions. Agents copy live patterns from
-the Task example; the compiler enforces the architecture.
+The agent-development base for Rust: everything an AI agent needs to run
+Rust projects the way the Python stack works with skills and contracts —
+not a one-off scaffold, but a reusable harness.
 
-**Stack**: Rust (edition 2024) · axum · PostgreSQL + sqlx (compile-time checked
-queries) · Redis · RabbitMQ (lapin) · tokio · tracing. Clean Architecture as a
-5-crate cargo workspace where layer boundaries are compile errors, not
-conventions.
+Two components:
 
-## Prerequisites
+- **`skills/rust-development/`** — the universal Rust skill (installed into
+  `~/.zcode/skills/`, loaded by agents on every Rust task): agent workflow,
+  crate/API verification, async, ownership, traits, error handling, testing,
+  style gates — plus a deep `reference.md` (tokio, sqlx, lapin, redis,
+  tracing).
+- **`templates/rust-service/`** — a working, fully tested service template
+  (axum + PostgreSQL/sqlx + Redis + RabbitMQ, 5-crate clean-architecture
+  workspace, compile-time checked SQL, testcontainers integration tests,
+  CI). Copy it to start a new service project in minutes.
 
-- Rust via [rustup](https://rustup.rs) (the version is pinned in `rust-toolchain.toml`)
-- Docker (with the daemon running)
-- [`just`](https://github.com/casey/just) — `cargo install just` or `brew install just`
-- [`sqlx-cli`](https://github.com/launchbadge/sqlx) — `cargo install sqlx-cli --no-default-features --features postgres,rustls`
-
-## Quickstart
+## Install the skill
 
 ```bash
+ln -s ~/RustProjects/agentic_development_base/skills/rust-development \
+      ~/.zcode/skills/rust-development
+```
+
+This repo stays the source of truth: edit the skill here, commit; the
+symlink picks changes up on the next session.
+
+## Start a new service project
+
+```bash
+cp -r ~/RustProjects/agentic_development_base/templates/rust-service ~/RustProjects/<new-project>
+cd ~/RustProjects/<new-project>
 cp .env.example .env
-just setup        # docker: postgres/redis/rabbitmq + migrations
-just check        # fmt + clippy -D warnings + unit tests
-just run          # HTTP API on :8080
+just setup && just check && just run
 ```
 
-```bash
-curl -X POST localhost:8080/api/tasks -H 'content-type: application/json' -d '{"title":"hello"}'
-curl localhost:8080/api/tasks
-```
+Details, conventions and task recipes live in
+[`templates/rust-service/AGENTS.md`](templates/rust-service/AGENTS.md) —
+that contract applies inside every project created from the template.
 
-In a second terminal: `just run-worker` — it consumes `task.created` events
-into a Redis counter (`redis-cli get stats:tasks_created` to see it).
-
-Integration tests spin throwaway containers via testcontainers:
-
-```bash
-just test-int
-```
-
-RabbitMQ management UI: http://localhost:15672 (app/app).
-
-## Layout
+## Repo map
 
 ```
-crates/domain   pure business logic (no infra deps allowed)
-crates/app      use cases over domain traits
-crates/infra    sqlx / redis / lapin implementations, config, telemetry
-crates/server   axum HTTP API (binary)
-crates/worker   RabbitMQ consumers (binary; remove for single-task projects)
+skills/rust-development/   universal Rust skill (SKILL.md + reference.md)
+templates/rust-service/    service template (see its own AGENTS.md)
+.github/workflows/ci.yml   CI for the template (working-directory based)
 ```
-
-## For agents and humans
-
-- [`AGENTS.md`](AGENTS.md) — the agent contract: boundaries, quality gate,
-  conventions, known shortcuts.
-- [`skills/`](skills/) — task recipes: add-entity, add-endpoint, add-consumer,
-  SQL & migrations, testing (in Russian).
-
-CI (`.github/workflows/ci.yml`): fmt, clippy, unit tests, offline SQL cache
-check, testcontainers integration tests, release build — all offline-safe via
-the committed `.sqlx/` cache.
