@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  # Compilation uses the committed .sqlx offline cache (no live DB needed);
+  # DATABASE_URL serves only `sqlx migrate run` + `sqlx prepare --check`.
+  SQLX_OFFLINE: "true"
+  DATABASE_URL: postgres://app:app@localhost:5432/app
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U app -d app"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install sqlx-cli (migrate + prepare --check)
+        uses: taiki-e/install-action@v2
+        with:
+          tool: sqlx-cli
+
+      - name: Formatting
+        run: cargo fmt --all -- --check
+
+      - name: Lints
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Unit tests
+        run: cargo test --workspace
+
+      - name: Apply migrations
+        run: sqlx migrate run
+
+      - name: Compile-time SQL cache is up to date
+        run: cargo sqlx prepare --check --workspace
+
+      # ubuntu-latest ships docker, so testcontainers can start real
+      # PostgreSQL/Redis/RabbitMQ containers.
+      - name: Integration tests
+        run: cargo test --workspace -- --ignored
+
+      - name: Release build
+        run: cargo build --workspace --release
