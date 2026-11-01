@@ -1,0 +1,17 @@
+[package]
+name = "domain"
+version.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+# Boundary rule: domain depends only on pure utility crates.
+# sqlx / redis / lapin / axum are FORBIDDEN here — the workspace structure
+# makes such a dependency a compile error. See AGENTS.md.
+[dependencies]
+async-trait.workspace = true
+chrono.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+uuid.workspace = true

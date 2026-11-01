@@ -1,0 +1,24 @@
+[package]
+name = "worker"
+version.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+default = []
+otlp = ["infra/otlp"]
+
+[dependencies]
+domain = { workspace = true }
+infra = { workspace = true }
+anyhow.workspace = true
+futures-util.workspace = true
+lapin.workspace = true
+redis.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true

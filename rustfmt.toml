@@ -1,0 +1,2 @@
+# Intentionally empty: the template follows rustfmt defaults.
+# Any project-wide formatting decisions go here so they apply to all crates.

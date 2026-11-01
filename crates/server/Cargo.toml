@@ -1,0 +1,36 @@
+[package]
+name = "server"
+version.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+default = []
+otlp = ["infra/otlp"]
+
+[dependencies]
+app = { workspace = true }
+domain = { workspace = true }
+infra = { workspace = true }
+anyhow.workspace = true
+axum.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+async-trait.workspace = true
+futures-util.workspace = true
+http-body-util.workspace = true
+secrecy.workspace = true
+serde_json.workspace = true
+sqlx.workspace = true
+testcontainers-modules.workspace = true
+tower.workspace = true

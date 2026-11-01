@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE tasks\n            SET status = $3, updated_at = $4\n            WHERE id = $1 AND status = $2\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text",
+        "Text",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "a48b6ef3f940ed03005971e8aa4502ffa2c4aea5769c49c54645189da1edd1d1"
+}
