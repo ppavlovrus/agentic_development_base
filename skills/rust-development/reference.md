@@ -168,6 +168,11 @@ channel *is* the synchronization.
 
 ## sqlx {#sqlx}
 
+> Deep PostgreSQL topics (schema design, advanced indexing, partitioning,
+> JSONB patterns, full-text search, query performance, pooling) → load the
+> `/postgresql-best-practices` skill (microsoft/postgres-skills, MIT; see the
+> harness README for installation). This section covers the Rust side only.
+
 ### Pool
 
 ```rust

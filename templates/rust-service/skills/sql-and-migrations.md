@@ -1,5 +1,10 @@
 # Рецепт: SQL и миграции
 
+> Глубокие вопросы PostgreSQL (дизайн схемы, сложные индексы, партиционирование,
+> JSONB, full-text search, производительность запросов) — загружай скилл
+> `/postgresql-best-practices` (microsoft/postgres-skills). Здесь — только
+> workflow проекта.
+
 ## Миграции
 
 - Каталог: `migrations/`, имя `NNNN_описание.sql` (номер следующий по порядку).

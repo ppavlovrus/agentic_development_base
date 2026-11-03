@@ -26,6 +26,22 @@ ln -s ~/RustProjects/agentic_development_base/skills/rust-development \
 This repo stays the source of truth: edit the skill here, commit; the
 symlink picks changes up on the next session.
 
+## Third-party skills
+
+Some deep topics are covered by external skills instead of ours — installed
+outside this repo (like cargo dependencies, updated via `git pull`), never
+vendored in:
+
+```bash
+# postgresql-best-practices (microsoft/postgres-skills, MIT)
+git clone --depth 1 https://github.com/microsoft/postgres-skills ~/agent-skills/postgres-skills
+ln -s ~/agent-skills/postgres-skills/plugin/skills/postgresql-best-practices \
+      ~/.zcode/skills/postgresql-best-practices
+```
+
+Cross-linked from `skills/rust-development/reference.md` (#sqlx) and the
+template's `skills/sql-and-migrations.md`.
+
 ## Start a new service project
 
 ```bash
