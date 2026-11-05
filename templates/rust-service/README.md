@@ -6,7 +6,7 @@ worker) rather than a folder of instructions. Agents copy live patterns from
 the Task example; the compiler enforces the architecture.
 
 Part of the `agentic_development_base` harness: **copy this directory to
-start a new project** (`cp -r templates/rust-service ~/RustProjects/<name>`),
+start a new project** (`cp -r templates/rust-service ~/my-service`),
 then follow the Quickstart below.
 
 **Stack**: Rust (edition 2024) · axum · PostgreSQL + sqlx (compile-time checked

@@ -63,7 +63,7 @@ first await, `lapin` picks its executor by feature. Prefer
 
 - **Single binary/library** — `cargo new`; keep `src/` flat until it hurts.
 - **Several binaries + shared core** — cargo workspace with thin `[workspace.dependencies]` (path deps for internal crates, shared versions for external).
-- **A service with HTTP + PostgreSQL/Redis/RabbitMQ** — don't scaffold by hand: copy `~/RustProjects/agentic_development_base/templates/rust-service` (verified 5-crate template, compile-time checked SQL, testcontainers tests) and follow its own AGENTS.md.
+- **A service with HTTP + PostgreSQL/Redis/RabbitMQ** — don't scaffold by hand: copy `templates/rust-service` from the [agentic_development_base](https://github.com/ppavlovrus/agentic_development_base) repo (verified 5-crate template, compile-time checked SQL, testcontainers tests) and follow its own AGENTS.md.
 
 Pin the toolchain (`rust-toolchain.toml`), use edition 2024, commit
 `Cargo.lock` for applications.
