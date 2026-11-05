@@ -35,7 +35,7 @@ jobs:
           --health-retries 12
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Shim-triggered toolchain installs skip components; install the
       # pinned toolchain (from rust-toolchain.toml in the working directory)
